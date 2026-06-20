@@ -1,5 +1,543 @@
 <!DOCTYPE html>
-<html>
-    <title>MERHABA</title>
-    <body>SELAM</body>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mağaza - Kitap Koleksiyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Login Page */
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            font-size: 2.5em;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            background: #1f2937;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-login:hover {
+            background: #111827;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Page */
+        .main-page {
+            display: none;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #1e40af;
+            font-size: 1.8em;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #1e40af;
+        }
+
+        .user-details {
+            text-align: right;
+        }
+
+        .user-name {
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .user-email {
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #1e40af;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .btn-primary:hover {
+            background: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            border: 2px solid #1e40af;
+            border-radius: 8px;
+            background: white;
+            color: #1e40af;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .btn-secondary:hover {
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        /* Content */
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .content h2 {
+            color: #1e40af;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table thead {
+            background: #f3f4f6;
+        }
+
+        .users-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e40af;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .users-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .users-table tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #1e40af;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background: #e5e7eb;
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            color: #999;
+        }
+
+        .loading td {
+            padding: 40px 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-right {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .user-details {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-page" id="loginPage">
+        <div class="login-box">
+            <div class="logo">
+                <h1>📚 Kitap Mağazası</h1>
+                <p>Aile Koleksiyonu</p>
+            </div>
+            <button id="googleLoginBtn" class="btn-login">🔐 Google ile Gir</button>
+        </div>
+    </div>
+
+    <!-- Main Page -->
+    <div class="main-page" id="mainPage">
+        <div class="header">
+            <h1>📚 Kitap Mağazası</h1>
+            <div class="header-right">
+                <div class="user-info">
+                    <img id="userPhoto" alt="Profil">
+                    <div class="user-details">
+                        <div class="user-name" id="userName"></div>
+                        <div class="user-email" id="userEmail"></div>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <button id="adminBtn" class="btn-primary" style="display: none;" onclick="showAdmin()">Admin Panel</button>
+                    <button class="btn-secondary" onclick="logout()">Çıkış Yap</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Content -->
+        <div class="content active" id="booksContent">
+            <h2>📖 Kitaplar</h2>
+            <p style="color: #666; font-size: 1.1em;">Yakında eklenecek...</p>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="content" id="adminContent">
+            <h2>📊 Admin Panel - Kullanıcı Listesi</h2>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <span id="totalUsers" class="stat-number">0</span>
+                    <span class="stat-label">Toplam Kullanıcı</span>
+                </div>
+                <div class="stat-card">
+                    <span id="activeUsers" class="stat-number">0</span>
+                    <span class="stat-label">Aktif Kullanıcı (7 gün)</span>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Profil</th>
+                            <th>Ad Soyad</th>
+                            <th>E-mail</th>
+                            <th>Son Giriş Tarihi</th>
+                            <th>Son Giriş Saati</th>
+                            <th>Rol</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr class="loading">
+                            <td colspan="6">Yükleniyor...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0nNZk_Uwv6qnCXwPFbnKEIQ7Bjo8cqbQ",
+            authDomain: "magaza-62202.firebaseapp.com",
+            projectId: "magaza-62202",
+            storageBucket: "magaza-62202.firebasestorage.app",
+            messagingSenderId: "187157785708",
+            appId: "1:187157785708:web:e32350c4db3569db357c49",
+            measurementId: "G-HN9CFH7LJM"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAIL = "tolga.kagan2017@gmail.com";
+
+        // Check auth state on page load
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                showMainPage(user);
+                recordUserLogin(user);
+                if (user.email === ADMIN_EMAIL) {
+                    document.getElementById('adminBtn').style.display = 'block';
+                    loadUsers();
+                }
+            } else {
+                showLoginPage();
+            }
+        });
+
+        // Google Login
+        document.getElementById('googleLoginBtn').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).catch(error => {
+                alert('Giriş hatası: ' + error.message);
+            });
+        });
+
+        // Show Login Page
+        function showLoginPage() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('mainPage').style.display = 'none';
+        }
+
+        // Show Main Page
+        function showMainPage(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('userName').textContent = user.displayName || 'Kullanıcı';
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userPhoto').src = user.photoURL || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>';
+        }
+
+        // Record user login
+        function recordUserLogin(user) {
+            db.collection('users').doc(user.uid).set({
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                lastLogin: new Date(),
+                isAdmin: user.email === ADMIN_EMAIL
+            }, { merge: true });
+        }
+
+        // Show Admin Panel
+        function showAdmin() {
+            document.getElementById('booksContent').classList.remove('active');
+            document.getElementById('adminContent').classList.add('active');
+        }
+
+        // Show Books
+        function showBooks() {
+            document.getElementById('adminContent').classList.remove('active');
+            document.getElementById('booksContent').classList.add('active');
+        }
+
+        // Load Users
+        function loadUsers() {
+            db.collection('users').onSnapshot(snapshot => {
+                const users = [];
+                snapshot.forEach(doc => {
+                    users.push(doc.data());
+                });
+                displayUsers(users);
+                updateStats(users);
+            });
+        }
+
+        // Display Users Table
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr class="loading"><td colspan="6">Henüz kullanıcı yok</td></tr>';
+                return;
+            }
+
+            users.sort((a, b) => {
+                const timeA = a.lastLogin ? new Date(a.lastLogin.toDate()).getTime() : 0;
+                const timeB = b.lastLogin ? new Date(b.lastLogin.toDate()).getTime() : 0;
+                return timeB - timeA;
+            });
+
+            tbody.innerHTML = users.map(user => {
+                const lastLogin = user.lastLogin ? new Date(user.lastLogin.toDate()) : null;
+                const date = lastLogin ? lastLogin.toLocaleDateString('tr-TR') : '-';
+                const time = lastLogin ? lastLogin.toLocaleTimeString('tr-TR') : '-';
+
+                return `
+                    <tr>
+                        <td><img src="${user.photoURL || 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22currentColor%22><circle cx=%2212%22 cy=%2212%22 r=%2210%22></circle></svg>'}" alt="" class="user-avatar"></td>
+                        <td>${user.displayName || 'Bilinmiyor'}</td>
+                        <td>${user.email}</td>
+                        <td>${date}</td>
+                        <td>${time}</td>
+                        <td>${user.isAdmin ? '<span class="admin-badge">Admin</span>' : '<span class="user-badge">Kullanıcı</span>'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update Stats
+        function updateStats(users) {
+            document.getElementById('totalUsers').textContent = users.length;
+
+            const now = Date.now();
+            const last7Days = now - (7 * 24 * 60 * 60 * 1000);
+
+            const activeUsers = users.filter(user => {
+                if (!user.lastLogin) return false;
+                const lastLoginTime = user.lastLogin.toDate().getTime();
+                return lastLoginTime > last7Days;
+            }).length;
+
+            document.getElementById('activeUsers').textContent = activeUsers;
+        }
+
+        // Logout
+        function logout() {
+            auth.signOut().then(() => {
+                showLoginPage();
+            });
+        }
+    </script>
+</body>
 </html>
